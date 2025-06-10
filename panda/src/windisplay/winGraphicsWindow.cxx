@@ -490,6 +490,19 @@ set_properties_now(WindowProperties &properties) {
     properties.clear_mouse_mode();
   }
 
+  if (properties.has_wake_lock()) {
+    if (properties.get_wake_lock() != _properties.get_wake_lock()) {
+      if (properties.get_wake_lock()) {
+        SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
+      } else {
+        SetThreadExecutionState(ES_CONTINUOUS);
+      }
+
+      _properties.set_wake_lock(properties.get_wake_lock());
+    }
+
+    properties.clear_wake_lock();
+  }
 }
 
 /**
