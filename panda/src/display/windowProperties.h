@@ -205,6 +205,13 @@ PUBLISHED:
   MAKE_PROPERTY2(parent_window, has_parent_window, get_parent_window,
                                 set_parent_window, clear_parent_window);
 
+  INLINE void set_wake_lock(bool active);
+  INLINE bool get_wake_lock() const;
+  INLINE bool has_wake_lock() const;
+  INLINE void clear_wake_lock();
+  MAKE_PROPERTY2(wake_lock, has_wake_lock, get_wake_lock,
+                            set_wake_lock, clear_wake_lock);
+
   PY_EXTENSION(PyObject *__getstate__(PyObject *self) const);
   PY_EXTENSION(void __setstate__(PyObject *self, PyObject *state));
 
@@ -233,6 +240,7 @@ private:
     S_parent_window        = 0x04000,
     S_raw_mice             = 0x08000,
     S_maximized            = 0x10000,
+    S_wake_lock            = 0x20000,
   };
 
   // This bitmask represents the true/false settings for various boolean flags
@@ -247,6 +255,7 @@ private:
     F_cursor_hidden  = S_cursor_hidden,
     F_fixed_size     = S_fixed_size,
     F_raw_mice       = S_raw_mice,
+    F_wake_lock      = S_wake_lock,
   };
 
   int _specified;

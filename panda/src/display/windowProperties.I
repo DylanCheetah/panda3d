@@ -767,6 +767,46 @@ clear_parent_window() {
   _parent_window = nullptr;
 }
 
+/**
+ * Enables or disables the wake lock. While the wake lock is enabled, the
+ * screensaver will not start and the screen will not sleep.
+ */
+INLINE void WindowProperties::
+set_wake_lock(bool active) {
+  if (active) {
+    _flags |= F_wake_lock;
+  } else {
+    _flags &= ~F_wake_lock;
+  }
+
+  _specified |= S_wake_lock;
+}
+
+/**
+ * Returns the current wake lock state.
+ */
+INLINE bool WindowProperties::
+get_wake_lock() const {
+  return ((_flags & F_wake_lock) != 0);
+}
+
+/**
+ * Returns true if the wake lock state has been modified.
+ */
+INLINE bool WindowProperties::
+has_wake_lock() const {
+  return ((_specified & S_wake_lock) != 0);
+}
+
+/**
+ * Removes the wake lock specification from the settings.
+ */
+INLINE void WindowProperties::
+clear_wake_lock() {
+  _specified &= ~S_wake_lock;
+  _flags &= ~F_wake_lock;
+}
+
 
 INLINE std::ostream &
 operator << (std::ostream &out, const WindowProperties &properties) {

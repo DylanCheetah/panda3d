@@ -268,6 +268,9 @@ add_properties(const WindowProperties &other) {
   if (other.has_parent_window()) {
     set_parent_window(other.get_parent_window());
   }
+  if (other.has_wake_lock()) {
+    set_wake_lock(other.get_wake_lock());
+  }
 }
 
 /**
