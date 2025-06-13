@@ -1073,6 +1073,19 @@ set_properties_now(WindowProperties &properties) {
     // Don't draw anything until this is done reconfiguring.
     _awaiting_configure_since = clock();
   }
+
+  if (properties.has_wake_lock()) {
+    if (properties.get_wake_lock() != _properties.get_wake_lock()) {
+      ostringstream ss;
+      ss << "xdg-screensaver "
+         << (properties.get_wake_lock() ? "suspend " : "resume ")
+         << _xwindow;
+      system(ss.str().c_str());
+      _properties.set_wake_lock(properties.get_wake_lock());
+    }
+
+    properties.clear_wake_lock();
+  }
 }
 
 /**
@@ -1080,6 +1093,12 @@ set_properties_now(WindowProperties &properties) {
  */
 void x11GraphicsWindow::
 close_window() {
+  if (_properties.get_wake_lock()) {
+    ostringstream ss;
+      ss << "xdg-screensaver resume " << _xwindow;
+      system(ss.str().c_str());
+  }
+
   if (_gsg != nullptr) {
     _gsg.clear();
   }
